@@ -20,7 +20,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cartao {
-
     @Id
     @Column
     private UUID idCartao;
@@ -30,5 +29,4 @@ public class Cartao {
     private String senha;
     @Column
     private BigDecimal saldo;
-
 }

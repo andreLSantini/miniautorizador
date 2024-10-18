@@ -6,6 +6,8 @@ import com.fcamara.vrbeneficios.port.output.CartaoPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class CartaoPersistence implements CartaoPort {
@@ -15,5 +17,15 @@ public class CartaoPersistence implements CartaoPort {
     @Override
     public Cartao salvarCartao(Cartao cartao) {
         return cartaoRepository.save(cartao);
+    }
+
+    @Override
+    public boolean existsById(String numeroCartao) {
+        return cartaoRepository.existsByNumeroCartao(numeroCartao);
+    }
+
+    @Override
+    public Optional<Cartao> findByNumeroCartao(String numeroCartao) {
+        return cartaoRepository.findByNumeroCartao(numeroCartao);
     }
 }

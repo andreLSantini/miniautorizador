@@ -16,9 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CartaoControllerIntegrationTest {
 
-
-
-
     @Autowired
     private TestRestTemplate testRestTemplate;
 
