@@ -1,76 +1,60 @@
 package com.fcamara.vrbeneficios.adapter.input.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fcamara.vrbeneficios.adapter.output.request.CriarCartaoRequest;
 import com.fcamara.vrbeneficios.port.input.CriarCartaoUseCase;
 import com.fcamara.vrbeneficios.port.input.ObterSaldoCartaoUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+
+import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.when;
 
-@WebMvcTest(controllers = CartaoController.class)
-@AutoConfigureMockMvc(addFilters = false)
+@ExtendWith(MockitoExtension.class)
 class CartaoControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
+    @Mock
     private CriarCartaoUseCase criarCartaoUseCase;
-    @MockBean
+
+    @Mock
     private ObterSaldoCartaoUseCase obterSaldoCartaoUseCase;
 
+    @InjectMocks
+    private CartaoController cartaoController;
 
-    @Test
-    @DisplayName("")
-    void test() {
-        assertEquals(1, 1);
+    private CriarCartaoRequest criarCartaoRequest;
+
+    @BeforeEach
+    public void setUp() {
+        criarCartaoRequest = new CriarCartaoRequest();
+        criarCartaoRequest.setNumeroCartao("6549873025634501");
+        criarCartaoRequest.setSenha("1234");
     }
 
     @Test
-    @DisplayName("")
-    void shouldCreateCardSuccess() throws Exception {
-        var cartaoRequest = CriarCartaoRequest.builder().numeroCartao("6549873025634501").build();
-        mockMvc.perform(post("/cartoes")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(cartaoRequest))
-                        .with(csrf()))
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$.numeroCartao").value("6549873025634501"))
-                .andExpect(jsonPath("$.senha").value("1234"));
+    @DisplayName("Deve Criar um cartao com sucesso")
+    void shouldCreateCardSuccess() {
+        var response = cartaoController.criarCartao(criarCartaoRequest);
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
     }
 
-    @Test
-    @DisplayName("")
-    void shouldCreateCardFail() {
-        assertEquals(1, 1);
-    }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Deve Obter saldo do cartao existente")
     void shouldGetBalanceSuccess() {
-        assertEquals(1, 1);
-    }
-
-    @Test
-    @DisplayName("")
-    void shouldGetBalanceFail() {
-        assertEquals(1, 1);
+        String numeroCartao = "6549873025634501";
+        var saldo = new BigDecimal("400.00");
+        when(obterSaldoCartaoUseCase.execute(numeroCartao)).thenReturn(saldo);
+        var response = cartaoController.obterSaldo(numeroCartao);
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(response.getBody(), saldo);
     }
 
 

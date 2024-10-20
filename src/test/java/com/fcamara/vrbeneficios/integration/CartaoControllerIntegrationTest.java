@@ -1,4 +1,4 @@
-package com.fcamara.vrbeneficios.adapter.input.controller.integration;
+package com.fcamara.vrbeneficios.integration;
 
 import com.fcamara.vrbeneficios.adapter.output.request.CriarCartaoRequest;
 import com.fcamara.vrbeneficios.adapter.output.response.CartaoCriadoResponse;
