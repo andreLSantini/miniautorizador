@@ -5,6 +5,7 @@ import com.fcamara.vrbeneficios.adapter.output.response.CartaoCriadoResponse;
 import com.fcamara.vrbeneficios.domain.exception.CartaoExistenteException;
 import com.fcamara.vrbeneficios.domain.exception.CartaoNaoEncontradoException;
 import com.fcamara.vrbeneficios.domain.exception.SaldoCartaoInvalidoException;
+import com.fcamara.vrbeneficios.domain.exception.SenhaInvalidaException;
 import com.fcamara.vrbeneficios.domain.model.CartaoEntity;
 import com.fcamara.vrbeneficios.port.input.CriarCartaoUseCase;
 import com.fcamara.vrbeneficios.port.input.ObterSaldoCartaoUseCase;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -47,8 +49,21 @@ public class CartaoService implements CriarCartaoUseCase, ObterSaldoCartaoUseCas
 
     @Override
     public BigDecimal execute(String numeroCartao) {
-        Cartao cartao = cartaoPort.findByNumeroCartao(numeroCartao)
-                .orElseThrow(() -> new CartaoNaoEncontradoException("Cartão não encontrado"));
+        var cartao = getCartao(numeroCartao).orElseThrow(() -> new CartaoNaoEncontradoException(""));
         return cartao.getSaldo();
+    }
+
+    public Optional<Cartao> getCartao(String numeroCartao) {
+        return cartaoPort.findByNumeroCartao(numeroCartao);
+    }
+
+    public void validaSenhaCartao(Cartao cartao, String senha) {
+        if (!cartao.getSenha().equals(senha)) {
+            throw new SenhaInvalidaException("SENHA_INVALIDA");
+        }
+    }
+
+    public void salvarCartao(Cartao cartao) {
+        this.cartaoPort.salvarCartao(cartao);
     }
 }

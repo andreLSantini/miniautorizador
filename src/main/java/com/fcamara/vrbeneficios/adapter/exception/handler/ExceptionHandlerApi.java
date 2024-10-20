@@ -1,9 +1,7 @@
 package com.fcamara.vrbeneficios.adapter.exception.handler;
 
 import com.fcamara.vrbeneficios.adapter.exception.handler.response.ApiErroResponse;
-import com.fcamara.vrbeneficios.domain.exception.CartaoExistenteException;
-import com.fcamara.vrbeneficios.domain.exception.CartaoNaoEncontradoException;
-import com.fcamara.vrbeneficios.domain.exception.SaldoCartaoInvalidoException;
+import com.fcamara.vrbeneficios.domain.exception.*;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -21,15 +19,18 @@ public class ExceptionHandlerApi {
         return new ResponseEntity<>(erroResponse, erroResponse.getHttpStatus());
     }
 
-    @ExceptionHandler(CartaoNaoEncontradoException.class)
-    public ResponseEntity<Object> handlerExceptionCartaoNaoEncontrado(CartaoNaoEncontradoException cartaoNaoEncontradoException) {
-        var erroResponse = new ApiErroResponse(HttpStatus.BAD_REQUEST, cartaoNaoEncontradoException.getMessage());
-        return new ResponseEntity<>(erroResponse, erroResponse.getHttpStatus());
-    }
-
     @ExceptionHandler(SaldoCartaoInvalidoException.class)
     public ResponseEntity<Object> handlerExceptionSaldoCartaoInvalido(SaldoCartaoInvalidoException saldoCartaoInvalidoException) {
         var erroResponse = new ApiErroResponse(HttpStatus.BAD_REQUEST, saldoCartaoInvalidoException.getMessage());
+        return new ResponseEntity<>(erroResponse, erroResponse.getHttpStatus());
+    }
+
+    @ExceptionHandler({SaldoInsuficienteException.class, SenhaInvalidaException.class, CartaoNaoEncontradoException.class})
+    public ResponseEntity<Object> handlerExceptionTransacao(RuntimeException runtimeException) {
+        if (runtimeException.getMessage().isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        var erroResponse = new ApiErroResponse(HttpStatus.UNPROCESSABLE_ENTITY, runtimeException.getMessage());
         return new ResponseEntity<>(erroResponse, erroResponse.getHttpStatus());
     }
 }
