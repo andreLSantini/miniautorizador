@@ -17,15 +17,17 @@ public class ExceptionHandlerApi {
 
     @ExceptionHandler(CartaoExistenteException.class)
     public ResponseEntity<Object> handlerExceptionCartaoExistente(CartaoExistenteException cartaoExistenteException) {
-        var erroResponse = new ApiErroResponse(HttpStatus.BAD_REQUEST, "Não foi possivel criar o cartao");
+        var erroResponse = new ApiErroResponse(HttpStatus.UNPROCESSABLE_ENTITY, "Não foi possivel criar o cartao");
         return new ResponseEntity<>(erroResponse, erroResponse.getHttpStatus());
     }
+
     @ExceptionHandler(CartaoNaoEncontradoException.class)
     public ResponseEntity<Object> handlerExceptionCartaoNaoEncontrado(CartaoNaoEncontradoException cartaoNaoEncontradoException) {
         var erroResponse = new ApiErroResponse(HttpStatus.BAD_REQUEST, cartaoNaoEncontradoException.getMessage());
         return new ResponseEntity<>(erroResponse, erroResponse.getHttpStatus());
     }
-    @ExceptionHandler(CartaoExistenteException.class)
+
+    @ExceptionHandler(SaldoCartaoInvalidoException.class)
     public ResponseEntity<Object> handlerExceptionSaldoCartaoInvalido(SaldoCartaoInvalidoException saldoCartaoInvalidoException) {
         var erroResponse = new ApiErroResponse(HttpStatus.BAD_REQUEST, saldoCartaoInvalidoException.getMessage());
         return new ResponseEntity<>(erroResponse, erroResponse.getHttpStatus());
