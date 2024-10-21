@@ -29,7 +29,7 @@ public class CartaoService implements CriarCartaoUseCase, ObterSaldoCartaoUseCas
             throw new CartaoExistenteException("Cartão já existe");
         }
         var novoCartao = getNovoCartao(cartaoEntity);
-        cartaoPort.salvarCartao(novoCartao);
+        salvarCartao(novoCartao);
         return CartaoCriadoResponse.builder().numeroCartao(cartaoEntity.numeroCartao()).senha(cartaoEntity.senha()).build();
     }
 

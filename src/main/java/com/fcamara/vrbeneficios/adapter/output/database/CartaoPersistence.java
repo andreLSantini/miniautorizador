@@ -22,6 +22,7 @@ public class CartaoPersistence implements CartaoPort {
         return cartaoRepository.save(cartao);
     }
 
+    @Transactional
     @Override
     public boolean existsById(String numeroCartao) {
         return cartaoRepository.existsByNumeroCartao(numeroCartao);
