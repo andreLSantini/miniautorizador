@@ -1,0 +1,22 @@
+version: '3'
+services:
+  app:
+    build: .
+    container_name: app-dev
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./config/application-dev.yml:/app/config/application.yml
+    depends_on:
+      - db
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: qa_db
+      MYSQL_USER: dev_user
+      MYSQL_PASSWORD: dev_password
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3307:3306"

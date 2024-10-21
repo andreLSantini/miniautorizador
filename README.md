@@ -23,4 +23,28 @@
 
 ## Como Executar o Projeto
 
-// criar mais topicos, como clonar, configuraçao da maquina para rodar, comandos e afins
+```bash
+mvn clean install
+mvn spring-boot:run
+```
+A aplicação estará disponível em `http://localhost:8080`.
+
+## Swagger e Evidencias
+
+![alt text](evidencias/img.png)
+![alt text](evidencias/img_1.png)
+![alt text](evidencias/img_2.png)
+![alt text](evidencias/img_3.png)
+![alt text](evidencias/img_4.png)
+![alt text](evidencias/img_5.png)
+![alt text](evidencias/img_6.png)
+![alt text](evidencias/img_7.png)
+![alt text](evidencias/img_8.png)
+![alt text](evidencias/img_9.png)
+
+
+## Contato
+
+Se tiver qualquer dúvida ou sugestão, fique à vontade para entrar em contato.
+
+## dev. Andre Luis Santini

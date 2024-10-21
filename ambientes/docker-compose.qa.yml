@@ -1,0 +1,22 @@
+version: '3'
+services:
+  app:
+    build: .
+    container_name: app-qa
+    environment:
+      SPRING_PROFILES_ACTIVE: qa
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./config/application-qa.yml:/app/config/application.yml
+    depends_on:
+      - db
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: qa_db
+      MYSQL_USER: qa_user
+      MYSQL_PASSWORD: qa_password
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3308:3306"
