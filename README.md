@@ -28,6 +28,8 @@ mvn spring-boot:run
 ```
 A aplicação estará disponível em `http://localhost:8080`.
 
+#### para TESTE do projeto, usar username: usuario e password: 123456
+
 ## Swagger e Evidencias
 
 ![alt text](evidencias/img.png)
