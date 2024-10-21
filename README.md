@@ -1,6 +1,5 @@
 # Mini Autorizador VR Benefícios
 
-// por descrição aqui.
 
 ## Tecnologias Utilizadas
 
